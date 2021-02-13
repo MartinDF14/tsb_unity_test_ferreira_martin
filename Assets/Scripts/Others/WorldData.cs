@@ -9,8 +9,8 @@ public class WorldData : MonoBehaviour
         get { return _instance; }
     }
 
-    [ReadOnly] public const int WORLD_WIDTH = 16;
-    [ReadOnly] public const int WORLD_HEIGHT = 9;
+    [ReadOnly] public const int WORLD_WIDTH = 36;
+    [ReadOnly] public const int WORLD_HEIGHT = 25;
     [ReadOnly] public const int ENEMIES_PREFABS = 3;
     [ReadOnly] public const int MAX_LIVES = 3;
     [HideInInspector]

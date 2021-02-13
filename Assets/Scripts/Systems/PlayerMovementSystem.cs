@@ -16,7 +16,7 @@ public class PlayerMovementSystem : SystemBase
                 if (movementComponent.accelerating)
                 {
                     movementComponent.lastDirection = math.mul(rotation.Value, new float3(0f, 0f, 1f));
-                    velocity.Linear += 10 * movementComponent.lastDirection * deltaTime;
+                    velocity.Linear += 20 * movementComponent.lastDirection * deltaTime;
                     velocity.Linear.x = math.clamp(velocity.Linear.x, -maxSpeed, maxSpeed);
                     velocity.Linear.y = math.clamp(velocity.Linear.y, -maxSpeed, maxSpeed);
                     velocity.Linear.z = 0;

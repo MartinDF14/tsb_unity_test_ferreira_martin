@@ -39,7 +39,7 @@ public class ShotSpawnerSystem : SystemBase
                             float3 fwd = math.forward(rotation.Value);
                             commandBuffer.SetComponent(entityInQueryIndex, instance, new Translation
                             {
-                                Value = translation.Value + fwd
+                                Value = translation.Value + fwd * 2 
                             });
 
                             float3 angle = fwd;

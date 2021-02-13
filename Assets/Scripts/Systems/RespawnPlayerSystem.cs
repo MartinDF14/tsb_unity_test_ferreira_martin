@@ -19,13 +19,17 @@ public class RespawnPlayerSystem : SystemBase
         var commandBuffer = bufferSystem.CreateCommandBuffer().AsParallelWriter();
 
         var entities = EntityManager.GetAllEntities(Allocator.Temp);
+        var invuls = entities.Where(x => EntityManager.HasComponent<InvulTag>(x));
+        bool invul = invuls != null && invuls.Count() > 1;
 
         Entities
             .WithAll<RespawnTag>()
             .ForEach((Entity entity, int entityInQueryIndex, ref Rotation rotation, ref Translation translation, ref PlayerMovementComponent movement, ref PhysicsVelocity velocity) =>
             {
                 commandBuffer.RemoveComponent<RespawnTag>(entityInQueryIndex, entity);
-
+                if (invul)
+                    return;
+                commandBuffer.AddComponent(entityInQueryIndex, entity, new InvulPowerUpTag());
                 commandBuffer.SetComponent(entityInQueryIndex, entity, new Translation
                 {
                     Value = float3.zero

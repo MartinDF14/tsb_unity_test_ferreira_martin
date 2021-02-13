@@ -34,17 +34,16 @@ public class MadShotSpawnerSystem : SystemBase
                         {
                             var instance = commandBuffer.Instantiate(entityInQueryIndex, spawner.prefab);
 
-                            float3 dir = math.mul(rotation.Value, new float3(0f, 0f, 1f));
-                            dir *= i;
+                            float3 fwd = math.forward(rotation.Value) * i;
                             commandBuffer.SetComponent(entityInQueryIndex, instance, new Translation
                             {
-                                Value = translation.Value + dir
+                                Value = translation.Value + fwd * 2
                             });
 
                             commandBuffer.SetComponent(entityInQueryIndex, instance, new MoverComponent
                             {
                                 speed = 5,
-                                direction = dir
+                                direction = fwd
                             });
                             commandBuffer.AddComponent(entityInQueryIndex, instance, new DestroyOnNewWorldTag());
                             commandBuffer.AddComponent(entityInQueryIndex, instance, new MadShotPowerUpComponent());
