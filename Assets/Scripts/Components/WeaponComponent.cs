@@ -14,7 +14,7 @@ public struct WeaponComponent : IComponentData
 [Serializable]
 public struct Weapon : IComponentData
 {
-    public bool friendlyFire;
+    public bool ignorePlayer;
     public float fireDelay;
     public float realoadingTime;
     public float bulletSpeed;
@@ -22,7 +22,7 @@ public struct Weapon : IComponentData
 
     public Weapon(int shots, bool friendlyFire, float fireRate, float bulletSpeed, float realoadingTime = 0)
     {
-        this.friendlyFire = friendlyFire;
+        this.ignorePlayer = friendlyFire;
         this.shots = shots;
         this.fireDelay = fireRate;
         this.realoadingTime = 0;

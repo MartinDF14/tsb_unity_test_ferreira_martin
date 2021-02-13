@@ -468,7 +468,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentWeapon:
-    friendlyFire: 1
+    ignorePlayer: 1
     fireDelay: 0.1
     realoadingTime: 0
     bulletSpeed: 17

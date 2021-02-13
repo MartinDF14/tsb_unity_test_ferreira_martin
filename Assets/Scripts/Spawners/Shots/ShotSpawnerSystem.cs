@@ -55,7 +55,7 @@ public class ShotSpawnerSystem : SystemBase
                             });
                             top = !top;
                             commandBuffer.AddComponent(entityInQueryIndex, instance, new DestroyOnNewWorldTag());
-                            if (weapon.currentWeapon.friendlyFire)
+                            if (weapon.currentWeapon.ignorePlayer)
                                 commandBuffer.AddComponent(entityInQueryIndex, instance, new FriendlyFireTag());
                         }
                     }
