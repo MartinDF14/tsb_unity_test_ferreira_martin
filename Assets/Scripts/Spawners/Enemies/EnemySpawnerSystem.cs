@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -39,6 +40,9 @@ public class EnemySpawnerSystem : SystemBase
         var level = WorldData.Instance.Level;
         var speed = WorldData.Instance.MaxSpeed;
 
+        var maxWidth = WorldData.WORLD_WIDTH;
+        var maxHeight = WorldData.WORLD_HEIGHT;
+
         var random = UnityEngine.Random.Range(0, Mathf.Infinity);
         var rnd = Unity.Mathematics.Random.CreateFromIndex((uint)random);
 
@@ -56,8 +60,8 @@ public class EnemySpawnerSystem : SystemBase
 
                     var side = rnd.NextInt(0, 4);
                     var spawnPos = new float2(
-                        side == 0 ? -16 : side == 1 ? 16 : rnd.NextInt(-16, 16),
-                        side == 2 ? 9 : side == 3 ? 9 : rnd.NextInt(-9, 9));
+                        side == 0 ? -maxWidth + 2 : side == 1 ? maxWidth - 2 : rnd.NextInt(-maxWidth + 2, maxWidth - 2),
+                        side == 2 ? maxHeight - 2 : side == 3 ? -maxHeight + 2 : rnd.NextInt(-maxHeight + 2, maxHeight - 2));
                     commandBuffer.SetComponent(entityInQueryIndex, instance, new Translation { Value = new float3(spawnPos.x, spawnPos.y, 0) });
 
                     var directionCircle = new float2(rnd.NextFloat(-1f, 1f), rnd.NextFloat(-1f, 1f));

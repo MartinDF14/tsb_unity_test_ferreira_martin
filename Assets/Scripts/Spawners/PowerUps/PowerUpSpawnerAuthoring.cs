@@ -1,18 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
-
-public class ShooterAuthoring : MonoBehaviour, IDeclareReferencedPrefabs, IConvertGameObjectToEntity
+public class PowerUpSpawnerAuthoring : MonoBehaviour, IDeclareReferencedPrefabs, IConvertGameObjectToEntity
 {
-    public GameObject prefab;
+    public GameObject powerUp;
+
 
     public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
     {
-        var spawnerData = new ShooterComponent
+        var spawnerData = new PowerUpSpawnerComponent
         {
-            prefab = conversionSystem.GetPrimaryEntity(prefab)
+            powerUp = conversionSystem.GetPrimaryEntity(powerUp),
         };
 
         dstManager.AddComponentData(entity, spawnerData);
@@ -20,6 +21,6 @@ public class ShooterAuthoring : MonoBehaviour, IDeclareReferencedPrefabs, IConve
 
     public void DeclareReferencedPrefabs(List<GameObject> referencedPrefabs)
     {
-        referencedPrefabs.Add(prefab);
+        referencedPrefabs.Add(powerUp);
     }
 }

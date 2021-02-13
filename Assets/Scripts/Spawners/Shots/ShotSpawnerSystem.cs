@@ -3,7 +3,7 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
-public class ShootingSystem : SystemBase
+public class ShotSpawnerSystem : SystemBase
 {
     BeginInitializationEntityCommandBufferSystem bufferSystem;
 
@@ -21,8 +21,9 @@ public class ShootingSystem : SystemBase
         var deltaTime = Time.DeltaTime;
 
         Entities
+            .WithNone<MadShotPowerUpComponent>()
             .WithBurst(Unity.Burst.FloatMode.Default, Unity.Burst.FloatPrecision.Standard, true)
-            .ForEach((Entity entity, int entityInQueryIndex, ref WeaponComponent weapon, ref Rotation rotation, ref Translation translation, in ShooterComponent spawner) =>
+            .ForEach((Entity entity, int entityInQueryIndex, ref WeaponComponent weapon, ref Rotation rotation, ref Translation translation, in ShotSpawnerComponent spawner) =>
             {
                 if (weapon.shooting)
                 {
@@ -49,6 +50,8 @@ public class ShootingSystem : SystemBase
                             });
                             top = !top;
                             commandBuffer.AddComponent(entityInQueryIndex, instance, new DestroyOnNewWorldTag());
+                            if (weapon.currentWeapon.friendlyFire)
+                                commandBuffer.AddComponent(entityInQueryIndex, instance, new FriendlyFireTag());
                         }
                     }
                     else if (weapon.currentWeapon.realoadingTime > 0)

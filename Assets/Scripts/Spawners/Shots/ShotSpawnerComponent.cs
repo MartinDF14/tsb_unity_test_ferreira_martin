@@ -1,7 +1,7 @@
 using Unity.Entities;
 using UnityEngine;
 
-public struct ShooterComponent : IComponentData
+public struct ShotSpawnerComponent : IComponentData
 {
     public Entity prefab;
 }

@@ -22,6 +22,10 @@ public class OnCollisionSystem : JobComponentSystem
         [ReadOnly] public ComponentDataFromEntity<DamagerTag> allBullets;
         [ReadOnly] public ComponentDataFromEntity<PlayerMovementComponent> player;
         [ReadOnly] public ComponentDataFromEntity<EnemyShootTag> enemies;
+        [ReadOnly] public ComponentDataFromEntity<PowerUpTag> powerUps;
+        [ReadOnly] public ComponentDataFromEntity<MadShotPowerUpComponent> madshots;
+        [ReadOnly] public ComponentDataFromEntity<InvulTag> invuls;
+        [ReadOnly] public ComponentDataFromEntity<FriendlyFireTag> friendlyFires;
 
         public EntityCommandBuffer entityCommandBuffer;
 
@@ -31,30 +35,34 @@ public class OnCollisionSystem : JobComponentSystem
             Entity entityB = triggerEvent.EntityB;
 
             //bullets destroys vs all - ignore powerups & other bullets
-            if (allBullets.HasComponent(entityA) && !allBullets.HasComponent(entityB))
+            if (allBullets.HasComponent(entityA) && !allBullets.HasComponent(entityB) && !powerUps.HasComponent(entityA))
                 entityCommandBuffer.DestroyEntity(entityA);
-            if (allBullets.HasComponent(entityB) && !allBullets.HasComponent(entityA))
+            if (allBullets.HasComponent(entityB) && !allBullets.HasComponent(entityA) && !powerUps.HasComponent(entityB))
                 entityCommandBuffer.DestroyEntity(entityB);
 
-            //bullets destroys vs all - ignore other rocks
-            if (allRocks.HasComponent(entityA) && !allRocks.HasComponent(entityB))
+            //bullets destroys vs all - ignore powerups & other rocks
+            if (allRocks.HasComponent(entityA) && !allRocks.HasComponent(entityB) && !powerUps.HasComponent(entityB))
             {
                 entityCommandBuffer.AddComponent(entityA, new ReplicateTag());
+                entityCommandBuffer.AddComponent(entityA, new ScoringComponent { score = 1 });
             }
-            if (allRocks.HasComponent(entityB) && !allRocks.HasComponent(entityA))
+            if (allRocks.HasComponent(entityB) && !allRocks.HasComponent(entityA) && !powerUps.HasComponent(entityA))
             {
                 entityCommandBuffer.AddComponent(entityB, new ReplicateTag());
+                entityCommandBuffer.AddComponent(entityB, new ScoringComponent { score = 1 });
             }
 
 
-            //enemy ufos destroys vs bullets 
-            if (enemies.HasComponent(entityB) && allBullets.HasComponent(entityA))
+            //enemy ufos destroys vs bullets and invulshields only
+            if (enemies.HasComponent(entityB) && (allBullets.HasComponent(entityA) || invuls.HasComponent(entityA)))
             {
                 entityCommandBuffer.AddComponent(entityB, new EnemyDestroyedTag());
+                entityCommandBuffer.AddComponent(entityB, new ScoringComponent { score = 10 });
             }
-            if (enemies.HasComponent(entityA) && allBullets.HasComponent(entityB))
+            if (enemies.HasComponent(entityA) && (allBullets.HasComponent(entityB) || invuls.HasComponent(entityB)))
             {
                 entityCommandBuffer.AddComponent(entityA, new EnemyDestroyedTag());
+                entityCommandBuffer.AddComponent(entityA, new ScoringComponent { score = 10 });
             }
 
 
@@ -64,11 +72,23 @@ public class OnCollisionSystem : JobComponentSystem
             if (player.HasComponent(entityB) && allRocks.HasComponent(entityA))
                 entityCommandBuffer.AddComponent(entityB, new RespawnTag());
 
-            //player destroys vs bullets
-            if (player.HasComponent(entityA) && allBullets.HasComponent(entityB))
+            //player destroys vs bullets - ignore madshots
+            if (player.HasComponent(entityA) && allBullets.HasComponent(entityB) && !madshots.HasComponent(entityB) && !friendlyFires.HasComponent(entityB))
                 entityCommandBuffer.AddComponent(entityA, new RespawnTag());
-            if (player.HasComponent(entityB) && allBullets.HasComponent(entityA))
+            if (player.HasComponent(entityB) && allBullets.HasComponent(entityA) && !madshots.HasComponent(entityA) && !friendlyFires.HasComponent(entityA))
                 entityCommandBuffer.AddComponent(entityB, new RespawnTag());
+
+            //player picks powerups
+            if (player.HasComponent(entityA) && powerUps.HasComponent(entityB))
+            {
+                entityCommandBuffer.AddComponent(entityA, new PowerUpTag());
+                entityCommandBuffer.DestroyEntity(entityB);
+            }
+            if (player.HasComponent(entityB) && powerUps.HasComponent(entityA))
+            {
+                entityCommandBuffer.AddComponent(entityB, new PowerUpTag());
+                entityCommandBuffer.DestroyEntity(entityA);
+            }
         }
     }
 
@@ -88,6 +108,10 @@ public class OnCollisionSystem : JobComponentSystem
         job.allBullets = GetComponentDataFromEntity<DamagerTag>(true);
         job.player = GetComponentDataFromEntity<PlayerMovementComponent>(true);
         job.enemies = GetComponentDataFromEntity<EnemyShootTag>(true);
+        job.powerUps = GetComponentDataFromEntity<PowerUpTag>(true);
+        job.madshots = GetComponentDataFromEntity<MadShotPowerUpComponent>(true);
+        job.invuls = GetComponentDataFromEntity<InvulTag>(true);
+        job.friendlyFires = GetComponentDataFromEntity<FriendlyFireTag>(true);
 
         JobHandle jobHandle = job.Schedule(stepPhysicsWorld.Simulation, ref buildPhysicsWorld.PhysicsWorld, inputDeps);
 

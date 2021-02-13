@@ -14,13 +14,15 @@ public struct WeaponComponent : IComponentData
 [Serializable]
 public struct Weapon : IComponentData
 {
+    public bool friendlyFire;
     public float fireDelay;
     public float realoadingTime;
     public float bulletSpeed;
     public int shots;
 
-    public Weapon(int shots, float fireRate, float bulletSpeed, float realoadingTime = 0)
+    public Weapon(int shots, bool friendlyFire, float fireRate, float bulletSpeed, float realoadingTime = 0)
     {
+        this.friendlyFire = friendlyFire;
         this.shots = shots;
         this.fireDelay = fireRate;
         this.realoadingTime = 0;

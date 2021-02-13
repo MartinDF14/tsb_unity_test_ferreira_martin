@@ -466,10 +466,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentWeapon:
-    fireDelay: 0.1
+    fireDelay: 0
     realoadingTime: 0
     bulletSpeed: 15
-    shots: 1
+    shots: 11
   shooting: 0
 --- !u!114 &1070432869
 MonoBehaviour:
