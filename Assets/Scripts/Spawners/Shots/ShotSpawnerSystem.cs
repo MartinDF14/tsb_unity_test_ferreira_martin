@@ -1,5 +1,6 @@
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Physics;
 using Unity.Transforms;
 using UnityEngine;
 
@@ -23,7 +24,7 @@ public class ShotSpawnerSystem : SystemBase
         Entities
             .WithNone<MadShotPowerUpComponent>()
             .WithBurst(Unity.Burst.FloatMode.Default, Unity.Burst.FloatPrecision.Standard, true)
-            .ForEach((Entity entity, int entityInQueryIndex, ref WeaponComponent weapon, ref Rotation rotation, ref Translation translation, in ShotSpawnerComponent spawner) =>
+            .ForEach((Entity entity, int entityInQueryIndex, ref WeaponComponent weapon, ref Rotation rotation, ref Translation translation, ref PhysicsVelocity velocity, in ShotSpawnerComponent spawner) =>
             {
                 if (weapon.shooting)
                 {
@@ -41,12 +42,16 @@ public class ShotSpawnerSystem : SystemBase
                                 Value = translation.Value + fwd
                             });
 
+                            float3 angle = fwd;
                             if (i != 0)
-                                fwd = Quaternion.AngleAxis((top ? i : -i) * 3, math.forward()) * fwd;
+                                angle = Quaternion.AngleAxis((top ? i : -i) * 3, math.forward()) * fwd;
+
+                            var fwdVel = velocity.Linear * math.forward(rotation.Value);
+                            var fwdVelDif = fwdVel.x + fwdVel.y;
                             commandBuffer.SetComponent(entityInQueryIndex, instance, new MoverComponent
                             {
-                                speed = weapon.currentWeapon.bulletSpeed,
-                                direction = fwd
+                                speed = weapon.currentWeapon.bulletSpeed + fwdVelDif,
+                                direction = angle
                             });
                             top = !top;
                             commandBuffer.AddComponent(entityInQueryIndex, instance, new DestroyOnNewWorldTag());

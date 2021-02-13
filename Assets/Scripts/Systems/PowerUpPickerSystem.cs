@@ -23,7 +23,7 @@ public class PowerUpPickerSystem : SystemBase
             .WithAll<PowerUpTag, DestroyableTag>()
             .ForEach((Entity entity, int entityInQueryIndex, ref WeaponComponent weapon) =>
             {
-                var power = PowerUps.Invul;//  (PowerUps)random;
+                var power = (PowerUps)random;
 
                 if (power == PowerUps.MadShot)
                     commandBuffer.AddComponent(entityInQueryIndex, entity, new MadShotPowerUpComponent { timeLeft = 3f });

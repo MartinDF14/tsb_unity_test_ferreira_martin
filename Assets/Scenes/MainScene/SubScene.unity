@@ -142,6 +142,8 @@ GameObject:
   - component: {fileID: 1070432868}
   - component: {fileID: 1070432870}
   - component: {fileID: 1070432869}
+  - component: {fileID: 1070432871}
+  - component: {fileID: 1070432872}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -162,7 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnDirection: 0
-  turnSpeed: 8
+  turnSpeed: 5
   lastDirection:
     x: 0
     y: 0
@@ -466,10 +468,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentWeapon:
-    fireDelay: 0
+    friendlyFire: 1
+    fireDelay: 0.1
     realoadingTime: 0
-    bulletSpeed: 15
-    shots: 11
+    bulletSpeed: 17
+    shots: 1
   shooting: 0
 --- !u!114 &1070432869
 MonoBehaviour:
@@ -496,3 +499,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db5d8f72f4d970e449fa6c919fa6940e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1070432871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1070432859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 192ab7874ea068d44925b167c08722ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  madShot: {fileID: 960348418480199421, guid: 799769eef06c5a949a93b7940efca1e5, type: 3}
+--- !u!114 &1070432872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1070432859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aa85aff2fe06a744ab6e09385c91ef3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  invul: {fileID: 960348418480199421, guid: f12372be5466b564e803b1a58fc4894f, type: 3}

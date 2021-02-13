@@ -41,7 +41,7 @@ public class ReplicateSystem : SystemBase
 
                         commandBuffer.SetComponent(entityInQueryIndex, instance, new MoverComponent
                         {
-                            speed = mover.speed * 0.5f,
+                            speed = rockSize == 1 ? 4 : rockSize == 2 ? 5 : 6.5f,
                             direction = direction
                         });
                         commandBuffer.AddComponent(entityInQueryIndex, instance, new DestroyOnNewWorldTag());

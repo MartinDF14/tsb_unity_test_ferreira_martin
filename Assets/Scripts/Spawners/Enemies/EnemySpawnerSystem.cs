@@ -33,12 +33,12 @@ public class EnemySpawnerSystem : SystemBase
             return;
 
         WorldData.Instance.Level++;
-        WorldData.Instance.Level++;
         var commandBuffer = bufferSystem.CreateCommandBuffer().AsParallelWriter();
 
         var maxRocks = 2 + WorldData.Instance.Level;
         var level = WorldData.Instance.Level;
         var speed = WorldData.Instance.MaxSpeed;
+        var score = WorldData.Instance.Score;
 
         var maxWidth = WorldData.WORLD_WIDTH;
         var maxHeight = WorldData.WORLD_HEIGHT;
@@ -53,7 +53,7 @@ public class EnemySpawnerSystem : SystemBase
             {
                 for (int i = 0; i < maxRocks; i++)
                 {
-                    var rockSize = math.clamp(rnd.NextInt(1, level + 2), 1, 4);
+                    var rockSize = rnd.NextInt(1, 4);
                     var instance = commandBuffer.Instantiate(entityInQueryIndex, rockSize == 1 ? spawner.smallRock : rockSize == 2 ? spawner.medRock : spawner.bigRock);
 
                     commandBuffer.SetComponent(entityInQueryIndex, instance, new RockComponent { size = rockSize });
@@ -67,7 +67,7 @@ public class EnemySpawnerSystem : SystemBase
                     var directionCircle = new float2(rnd.NextFloat(-1f, 1f), rnd.NextFloat(-1f, 1f));
                     commandBuffer.SetComponent(entityInQueryIndex, instance, new MoverComponent
                     {
-                        speed = math.clamp(level + 5 - rockSize, -speed, speed),
+                        speed = rockSize == 1 ? 4 : rockSize == 2 ? 5 : 6.5f,
                         direction = new float3(directionCircle.x, directionCircle.y, 0)
                     });
 
@@ -87,7 +87,7 @@ public class EnemySpawnerSystem : SystemBase
                     var directionCircle = new float2(rnd.NextFloat(-1f, 1f), rnd.NextFloat(-1f, 1f));
                     commandBuffer.SetComponent(entityInQueryIndex, instance, new MoverComponent
                     {
-                        speed = math.clamp(level * 2.5f, -speed, speed),
+                        speed = math.clamp(4f + score * 0.01f, 4f, 6.5f),
                         direction = new float3(directionCircle.x, directionCircle.y, 0)
                     });
 

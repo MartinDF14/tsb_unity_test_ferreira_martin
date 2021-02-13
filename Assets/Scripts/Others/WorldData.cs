@@ -13,14 +13,15 @@ public class WorldData : MonoBehaviour
     [ReadOnly] public const int WORLD_HEIGHT = 9;
     [ReadOnly] public const int ENEMIES_PREFABS = 3;
     [ReadOnly] public const int MAX_LIVES = 3;
-    public int MaxSpeed = 15;
-    public int MAX_SIZE = 5;
+    [HideInInspector]
     public int ENEMIES_ALIVE = 3;
-
     [HideInInspector]
     public int Lives = MAX_LIVES;
-    public int Level = 0;
+    [HideInInspector]
     public int Score = 0;
+
+    public int MaxSpeed = 17;
+    public int Level = 0;
 
 
     private void Awake()
