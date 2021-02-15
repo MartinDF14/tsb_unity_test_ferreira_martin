@@ -34,12 +34,13 @@ Notas:
 Unity DOTS esta todavia muy "verde". 
 Hay varios patrones que no tuve el tiempo para investigar como hacerlas con Unity DOTS, pero que habría implementado si usara Unity de forma normal, como por ejemplo:
     -Factory para la creacion de balas y enemigos
-    -Pool de objetos para balas (super importante)
+    -Strategy para los distintos tipos de disparos
+    -Pool de objetos para balas y quizas rocas (super importante)
     -Observer para hookear datos en tiempo real para la UI (no puedo tomar datos de los jobs)
 
 Por otro lado nunca había desarrollado nada en DOTS por completo.
-Me gusta muchísimo el poder manejar tantos objetos en trabajos en paralelo y poder tener miles de balas sin que caigan los fps 
-    -Pueden probarlo subiendo la cantidad de balas del jugador (20 por ejemplo) y bajandole la cadencia de disparo (a 0 po ejemplo)
+Me gusta el poder manejar tantos objetos con trabajos en paralelo y poder tener miles de balas sin que caigan los fps 
+    -Pueden probarlo subiendo la cantidad de balas del jugador modificando la variable "shots" del gameobject "player" que esta en escena (20 por ejemplo) y bajandole la cadencia de disparo (a 0 po ejemplo)
     -Pruebenlo, se ve genial ! 
 
 
